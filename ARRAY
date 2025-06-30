@@ -1,0 +1,11 @@
+Student = [41,56,78,76,32,21,54]
+print(student)
+
+for x in student:
+    print(x)
+
+student.append(95)
+print(student)
+
+student.remove(78)
+print(student)
