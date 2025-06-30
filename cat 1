@@ -1,0 +1,54 @@
+class SalesEmployee:
+    def __init__(self, employee_name, sales_total):
+        self.employee_name = employee_name
+        self.sales_total = sales_total
+        self.commission = 0
+        self.bonus = 0
+        self.total_salary = 0
+        self.calculate_total_salary()
+
+    def calculate_total_salary(self):
+        if self.sales_total > 500000:
+            self.commission = self.sales_total * 0.30
+            self.bonus = 25000
+        elif 350000 <= self.sales_total <= 499999:
+            self.commission = self.sales_total * 0.20
+        elif 200000 <= self.sales_total <= 349999:
+            self.commission = self.sales_total * 0.10
+        elif 50000 <= self.sales_total <= 199999:
+            self.commission = self.sales_total * 0.05
+        else:
+            self.commission = 0
+            self.bonus = 0
+            self.total_salary =  self.commission + self.bonus
+
+
+        def display_details(self):
+            print(f"name: {self.employee_name}")
+            print(f"sales total: {self.sales_total}")
+            print(f"commission: {self.commission}")
+            print(f"bonus: {self.bonus}")
+            print(f"total_salary: {self.total_salary}")
+
+
+class payroll:
+    def __init__ (self):
+        sales.employee=[]
+
+    def add_salesemployee(self,name,sales_total):
+        employee = SalesEmployee(name, sales_total)
+        self.employee.append(employee)
+
+        def display_all_salesemployee(self):
+            print("\n---SALES DEPARTMENT---\n")
+            for employee in self.employee:
+                employee.display_details()
+
+                def calculate_total_commission(self):
+                    total_commission = sum(p.commission for p in self.employee)
+                    print(f"Total commission: {total_commission}")
+                    return total_commission
+
+                if __employee_name == "__main__":
+                    payroll=payroll()
+                    payroll.add_salesemployee(name,sales_total)
