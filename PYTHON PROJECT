@@ -1,0 +1,136 @@
+class BankAccount:
+    def __init__(self, account_number, user_name, user_id, pin, initial_balance=0):
+        self.account_number = account_number
+        self.user_name = user_name
+        self.user_id = user_id
+        self.pin = pin
+        self.balance = initial_balance
+        self.login_attempts = 0
+        self.locked = False
+
+    def login(self, entered_pin):
+        if self.locked:
+            return "Account locked. Please contact customer service."
+        
+        if self.login_attempts >= 3:
+            self.locked = True
+            return "Too many failed attempts. Account locked."
+            
+        if entered_pin == self.pin:
+            self.login_attempts = 0
+            return True
+        else:
+            self.login_attempts += 1
+            remaining_attempts = 3 - self.login_attempts
+            return f"Invalid PIN. {remaining_attempts} attempts remaining."
+
+    def deposit(self, amount):
+        if amount < 500:
+            return f"Deposit failed. Minimum deposit is 500 KES. You tried to deposit {amount} KES."
+        self.balance += amount
+        return f"Deposit successful. New balance: {self.balance} KES."
+
+    def withdraw(self, amount):
+        if self.balance < 1500:
+            return "Withdrawal failed. Minimum balance of 1500 KES required to withdraw."
+        if amount > self.balance:
+            return "Withdrawal failed. Insufficient funds."
+        self.balance -= amount
+        return f"Withdrawal successful. Remaining balance: {self.balance} KES."
+
+    def check_balance(self):
+        return f"Current balance: {self.balance} KES."
+
+
+def main():
+    # Account creation process
+    print("Welcome to BBIT2024P Banking System")
+    print("\nPlease register your account details:")
+    
+    while True:
+        user_name = input("Enter your full name: ").strip()
+        if user_name:
+            break
+        print("Name cannot be empty. Please try again.")
+    
+    while True:
+        user_id = input("Enter your ID card number: ").strip()
+        if user_id:
+            break
+        print("ID card number cannot be empty. Please try again.")
+    
+    while True:
+        account_number = input("Enter your account number: ").strip()
+        if account_number:
+            break
+        print("Account number cannot be empty. Please try again.")
+    
+    while True:
+        pin = input("Create your 4-digit PIN: ").strip()
+        if len(pin) == 4 and pin.isdigit():
+            break
+        print("PIN must be exactly 4 digits. Please try again.")
+    
+    # Create account with initial balance of 0
+    account = BankAccount(account_number, user_name, user_id, pin)
+    
+    print("\nAccount created successfully!")
+    print(f"Welcome, {account.user_name} (ID: {account.user_id})")
+    
+    logged_in = False
+    
+    # Login process
+    while not logged_in and not account.locked:
+        print("\nPlease login to continue")
+        entered_pin = input("Enter your PIN: ")
+        login_result = account.login(entered_pin)
+        
+        if login_result is True:
+            logged_in = True
+            print("Login successful!")
+        else:
+            print(login_result)
+    
+    if account.locked:
+        print("System exiting due to account lock.")
+        return
+    
+    # Main banking menu
+    while logged_in:
+        print("\nMenu:")
+        print("1. Deposit")
+        print("2. Withdraw")
+        print("3. Check Balance")
+        print("4. View Account Info")
+        print("5. Exit")
+        
+        choice = input("Enter your choice (1-5): ")
+        
+        if choice == "1":
+            try:
+                amount = float(input("Enter deposit amount (minimum 500 KES): "))
+                print(account.deposit(amount))
+            except ValueError:
+                print("Invalid amount. Please enter a number.")
+        elif choice == "2":
+            try:
+                amount = float(input("Enter withdrawal amount: "))
+                print(account.withdraw(amount))
+            except ValueError:
+                print("Invalid amount. Please enter a number.")
+        elif choice == "3":
+            print(account.check_balance())
+        elif choice == "4":
+            print("\nAccount Information:")
+            print(f"Account Holder: {account.user_name}")
+            print(f"ID Card Number: {account.user_id}")
+            print(f"Account Number: {account.account_number}")
+            print(account.check_balance())
+        elif choice == "5":
+            print(f"Thank you for using our banking system, {account.user_name}. Goodbye!")
+            logged_in = False
+        else:
+            print("Invalid choice. Please select 1-5.")
+
+if __name__ == "__main__":
+    main()
